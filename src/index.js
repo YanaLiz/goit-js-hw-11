@@ -1,13 +1,15 @@
+
+
+
 import axios from "axios";
 import NewsApiService from "./news-service";
-// import Notiflix from "notiflix";
-
+import Notiflix from "notiflix";
 
 
 const refs = {
 searchForm: document.querySelector('#search-form'),
 loadMoreBtn:document.querySelector('.load-more'),
-articlesContainer: document.querySelector('.gallery'),
+hitsContainer: document.querySelector('.gallery'),
 }
 
 const newsApiService = new NewsApiService();
@@ -19,44 +21,74 @@ refs.loadMoreBtn.addEventListener('click', onLoadMore);
 
 function onSearch(e) {
 e.preventDefault();
-
+clearHitsConainer();
 newsApiService.query = e.currentTarget.elements.searchQuery.value;
 newsApiService.resetPage();
-newsApiService.fetchArticles().then(appendArticlesMarkup);
+newsApiService.fetchHits().then(appendHitsMarkup);
 
 }
 
-function createArticlesMarkup(articlesMarkup) {
-return articlesMarkup
-.map(({ }) => {
-return `<div class="photo-card">
-    <img src="" alt="" loading="lazy" />
+function createHitsMarkup(hits) {
+    return hits.map(({
+        webformatURL,
+        largeImageURL,
+        tags,
+        likes,
+        views,
+        comments,
+        downloads,
+    }) => {
+        return `<div class="photo-card">
+    <a href='${largeImageURL}'><img src="${webformatURL}" alt="${tags}" loading="lazy" /></a>
     <div class="info">
         <p class="info-item">
-            <b>${Likes}</b>
+            <b>Likes</b>${likes}
         </p>
         <p class="info-item">
-            <b>${Views}</b>
+            <b>Views</b>${views}
         </p>
         <p class="info-item">
-            <b>${Comments}</b>
+            <b>Comments</b>${comments}
         </p>
         <p class="info-item">
-            <b>${Downloads}</b>
+            <b>Downloads</b>${downloads}
         </p>
     </div>
 </div>`
-}).join('');
+        }).join('')
+        // gallery.insertAdjacentHTML('beforeend', hitsMarkup(hits));
 }
+
 
 function onLoadMore() {
-newsApiService.fetchArticles().then(articles => console.log(articles));
+newsApiService.fetchHits().then(appendHitsMarkup);
 }
 
-function appendArticlesMarkup(articles) {
-refs.articlesContainer.insertAdjacentHTML('beforeend',createArticlesMarkup);
+function appendHitsMarkup(hits) {
+refs.hitsContainer.insertAdjacentHTML('beforeend', createHitsMarkup(hits));
 }
 
-// function clearArticlesConainer() {
-// refs.articlesContainer.innerHTML = '';
-// }
+function clearHitsConainer() {
+refs.hitsContainer.innerHTML = '';
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
