@@ -26,7 +26,7 @@
 //   background-size: cover;
 //   background-position: center;
 // }
-// ======
+
 // :root {
 //   --timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 //   --animation-duration: 250ms;
@@ -34,9 +34,8 @@
 
 .gallery {
   display: grid;
-  // max-width: 1140px;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  grid-auto-rows: 240px;
+  // grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  // grid-auto-rows: 240px;
   grid-gap: 12px;
   justify-content: center;
   margin-left: auto;
@@ -62,10 +61,6 @@
   text-decoration: none;
 }
 
-// .gallery__link:hover {
-//   cursor: zoom-in;
-// }
-// /======/
 .gallery {
   display: flex;
   flex-wrap: wrap;
