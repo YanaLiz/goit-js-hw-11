@@ -78,7 +78,7 @@ function onLoadMore() {
     if (newsApiService.totalHits <= 40) {
         loadMoreBtn.disabled();
     
-    return Notiflix.Notify.failure("We're sorry, but you've reached the end of search results.")
+    Notiflix.Notify.failure("We're sorry, but you've reached the end of search results.")
 }
     newsApiService.fetchHits().then(data => {
         appendHitsMarkup(data.hits)
