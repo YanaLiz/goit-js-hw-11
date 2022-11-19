@@ -1,4 +1,6 @@
 
+const API_KEY = '31272833-6208e6f151d79070e75270c69';
+const BASE_URL='https://pixabay.com/api/'
 export default class NewsApiService{
 constructor() {
 this.searchQuery = '';
@@ -7,11 +9,11 @@ this.page = 1;
 
 fetchHits() {
 const options = {
-key: '31272833-6208e6f151d79070e75270c69'
+    key: API_KEY,
 }
 
 const
-url=`https://pixabay.com/api/?key=31272833-6208e6f151d79070e75270c69&page=${this.page}&q=${this.searchQuery}&orientation=horizontal&safesearch=true&image_type=photo&per_page=40`
+url=`${BASE_URL}?key=${API_KEY}&page=${this.page}&q=${this.searchQuery}&orientation=horizontal&safesearch=true&image_type=photo&per_page=40`
 
 return fetch(url, options)
 .then(response => response.json())
@@ -26,7 +28,7 @@ Notiflix.Notify.failure('Sorry, there are no images matching your search query. 
 }
 
 incrementPage() {
-this.page += 1;
+    this.page += 1;
 }
 
 resetPage() {
