@@ -37,41 +37,38 @@ clearHitsConainer();
     if (newsApiService.query === '') {
         return Notiflix.Notify.failure('Sorry, there are no images matching your search query. Please try again.')
     }
-newsApiService.resetPage();
-newsApiService.fetchHits().then(appendHitsMarkup);
+    newsApiService.resetPage();
+    newsApiService.fetchHits().then(data => {
+        // newsApiService.totalHits = data.totalHits;
+        // console.log(newsApiService.totalHits);
+        appendHitsMarkup(data.hits);
+    });
     loadMoreBtn.enable();
 }
 
 function createHitsMarkup(hits) {
-    return hits.map(({
-        webformatURL,
-        largeImageURL,
-        tags,
-        likes,
-        views,
-        comments,
-        downloads,
+    return hits.map(({webformatURL, largeImageURL,
+        tags, likes, views, comments, downloads,
     }) => {
         return `<div class="gallery__item photo-card">
     <a href='${largeImageURL}' class="gallery__link"><img class="gallery__image" src="${webformatURL}" alt="${tags}" loading="lazy" /></a>
     <div class="info">
         <p class="info-item">
-            <b>Likes</b>${likes}
+            <b>Likes</br></b>${likes}
         </p>
         <p class="info-item">
-            <b>Views</b>${views}
+            <b>Views</br></b>${views}
         </p>
         <p class="info-item">
-            <b>Comments</b>${comments}
+            <b>Comments</br></b>${comments}
         </p>
         <p class="info-item">
-            <b>Downloads</b>${downloads}
+            <b>Downloads</br></b>${downloads}
         </p>
     </div>
 </div>`
     }).join('');
 }
-
 
 var lightbox = new SimpleLightbox('.gallery a', { captionsData: "alt", captionDelay: 250 });
 
@@ -83,9 +80,8 @@ function onLoadMore() {
         
     //     return Notiflix.Notify.failure("We're sorry, but you've reached the end of search results.")
     // }
-    console.log(newApiService.totalHits)
-}
 
+}
 
 
 function appendHitsMarkup(hits) {
@@ -96,24 +92,4 @@ function appendHitsMarkup(hits) {
 function clearHitsConainer() {
     refs.hitsContainer.innerHTML = '';
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

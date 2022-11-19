@@ -21,7 +21,7 @@ return fetch(url, options)
 .then(data => {
     console.log(data);
 this.incrementPage();
-return data.hits;
+return data;
 })
 .catch(error => {
 Notiflix.Notify.failure('Sorry, there are no images matching your search query. Please try again.');
