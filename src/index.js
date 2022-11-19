@@ -39,8 +39,8 @@ clearHitsConainer();
     }
     newsApiService.resetPage();
     newsApiService.fetchHits().then(data => {
-        // newsApiService.totalHits = data.totalHits;
-        // console.log(newsApiService.totalHits);
+        newsApiService.totalHits = data.totalHits;
+        console.log(newsApiService.totalHits);
         appendHitsMarkup(data.hits);
     });
     loadMoreBtn.enable();
