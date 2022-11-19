@@ -73,6 +73,8 @@ function createHitsMarkup(hits) {
 var lightbox = new SimpleLightbox('.gallery a', { captionsData: "alt", captionDelay: 250 });
 
 function onLoadMore() {
+    newsApiService.decreaseTotalHits() 
+    console.log(newsApiService.totalHits);
     // newsApiService.fetchHits().then(appendHitsMarkup);
     newsApiService.fetchHits().then(data => {
         appendHitsMarkup(data.hits)
