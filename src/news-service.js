@@ -4,7 +4,8 @@ const BASE_URL='https://pixabay.com/api/'
 export default class NewsApiService{
 constructor() {
 this.searchQuery = '';
-this.page = 1;
+    this.page = 1;
+    this.totalHits = null;
 }
 
 fetchHits() {

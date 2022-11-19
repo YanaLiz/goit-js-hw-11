@@ -52,11 +52,11 @@
 // .gallery__image:hover {
 //   transform: scale(1.03);
 // }
-// .gallery__image {
-//   height: 100%;
-//   width: 100%;
-//   object-fit: cover;
-// }
+.gallery__image {
+  width: 300px;
+  height: 200px;
+  object-fit: cover;
+}
 .gallery__link {
   display: block;
   text-decoration: none;
@@ -69,27 +69,30 @@
 .gallery {
   display: flex;
   flex-wrap: wrap;
-  // margin-top: 50px;
+  margin-top: 50px;
   justify-content: center;
-  max-width: 100%;
-  object-fit: cover;
+  // max-width: 100%;
+  // object-fit: cover;
 }
 .is-hidden {
   display: none;
 }
 
 .search-form {
-  // display: block;
-  // flex-wrap: wrap;
-  // justify-content: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
   padding: 15px;
   margin-bottom: 25px;
   background-color: aquamarine;
 }
 .info {
   display: flex;
-  align-items: flex-end;
-  justify-content: space-evenly;
+  text-align: center;
+  flex-grow: 1;
+
+  // justify-content: space-evenly;
 }
 
 .photo-card {

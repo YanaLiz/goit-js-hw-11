@@ -12,8 +12,6 @@ loadMoreBtn:document.querySelector('.load-more'),
 hitsContainer: document.querySelector('.gallery'),
 }
 
-
-
 const newsApiService = new NewsApiService();
 
 console.log(newsApiService);
@@ -26,10 +24,10 @@ const loadMoreBtn = new LoadMoreBtn({
     hidden: true,
 })
 console.log(loadMoreBtn)
-loadMoreBtn.refs.button.addEventListener('click', onLoadMore);
 
-// loadMoreBtn.show();
-// loadMoreBtn.disabled();
+
+loadMoreBtn.show();
+loadMoreBtn.disabled();
 
 
 function onSearch(e) {
@@ -41,7 +39,7 @@ clearHitsConainer();
     }
 newsApiService.resetPage();
 newsApiService.fetchHits().then(appendHitsMarkup);
-
+    loadMoreBtn.enable();
 }
 
 function createHitsMarkup(hits) {
@@ -74,22 +72,25 @@ function createHitsMarkup(hits) {
     }).join('');
 }
 
-// const modalWindow = new SimpleLightbox('.gallery a');
+
 var lightbox = new SimpleLightbox('.gallery a', { captionsData: "alt", captionDelay: 250 });
 
 function onLoadMore() {
     newsApiService.fetchHits().then(appendHitsMarkup);
-    //     let createHitsMarkup=add.createHitsMarkup(array.hits)
-    // if (array.totalHits <= page*40) {
-    //     refs.loadMoreBtn.classList.add(`disabled`)
-    //     return Notiflix.Notify.failure("We're sorry, but you've reached the end of search results.")
-    // }
+    newsApiService.totalHits = array.totalHits;
+        let createHitsMarkup=createHitsMarkup(totalHits)
+    if (array.totalHits <= page*40) {
+        
+        return Notiflix.Notify.failure("We're sorry, but you've reached the end of search results.")
+    }
+    console.log(newApiService.totalHits)
 }
 
 
 
 function appendHitsMarkup(hits) {
-refs.hitsContainer.insertAdjacentHTML('beforeend', createHitsMarkup(hits));
+    refs.hitsContainer.insertAdjacentHTML('beforeend', createHitsMarkup(hits));
+    lightbox.refresh()
 }
 
 function clearHitsConainer() {

@@ -9,6 +9,12 @@
   margin-right: auto;
 }
 
+.gallery__image {
+  width: 300px;
+  height: 200px;
+  object-fit: cover;
+}
+
 .gallery__link {
   display: block;
   text-decoration: none;
@@ -17,9 +23,8 @@
 .gallery {
   display: flex;
   flex-wrap: wrap;
+  margin-top: 50px;
   justify-content: center;
-  max-width: 100%;
-  object-fit: cover;
 }
 
 .is-hidden {
@@ -27,6 +32,10 @@
 }
 
 .search-form {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
   padding: 15px;
   margin-bottom: 25px;
   background-color: aquamarine;
@@ -34,8 +43,8 @@
 
 .info {
   display: flex;
-  align-items: flex-end;
-  justify-content: space-evenly;
+  text-align: center;
+  flex-grow: 1;
 }
 
 .photo-card {
