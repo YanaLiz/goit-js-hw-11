@@ -12,14 +12,12 @@ getRefs(selector) {
 }
 enable() {
     this.refs.button.disabled = false;
-    // this.refs.label.textContent = 'Показати ще';
-    // this.refs.spiner.classList.add('is-hidden');
+
 
 }
 disabled() {
     this.refs.button.disabled = true;
-    // this.refs.label.textContent = 'Завантажуємо...';
-    // this.refs.spiner.classList.remove('is-hidden');
+
 }
     show() {
         this.refs.button.classList.remove('is-hidden');

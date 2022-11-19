@@ -35,9 +35,11 @@ incrementPage() {
 resetPage() {
 this.page = 1;
 }
-    decreaseTotalHits() {
-        this.totalHits = this.totalHits - 40
-    }
+
+decreaseTotalHits() {
+    this.totalHits = this.totalHits - 40
+}
+
 get query(){
 return this.searchQuery;
 }
