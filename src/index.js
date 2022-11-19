@@ -73,7 +73,10 @@ function createHitsMarkup(hits) {
 var lightbox = new SimpleLightbox('.gallery a', { captionsData: "alt", captionDelay: 250 });
 
 function onLoadMore() {
-    newsApiService.fetchHits().then(appendHitsMarkup);
+    // newsApiService.fetchHits().then(appendHitsMarkup);
+    newsApiService.fetchHits().then(data => {
+        appendHitsMarkup(data.hits)
+    })
     // newsApiService.totalHits = array.totalHits;
     //     let createHitsMarkup=createHitsMarkup(totalHits)
     // if (array.totalHits <= page*40) {
