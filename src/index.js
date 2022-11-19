@@ -75,6 +75,10 @@ var lightbox = new SimpleLightbox('.gallery a', { captionsData: "alt", captionDe
 function onLoadMore() {
     newsApiService.decreaseTotalHits() 
     console.log(newsApiService.totalHits);
+    if (newsApiService.totalHits <= 40) {
+    //ховай кнопку як ти планувала
+    return Notiflix.Notify.failure("We're sorry, but you've reached the end of search results.")
+}
     // newsApiService.fetchHits().then(appendHitsMarkup);
     newsApiService.fetchHits().then(data => {
         appendHitsMarkup(data.hits)
