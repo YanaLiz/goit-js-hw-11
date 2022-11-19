@@ -77,12 +77,12 @@ var lightbox = new SimpleLightbox('.gallery a', { captionsData: "alt", captionDe
 
 function onLoadMore() {
     newsApiService.fetchHits().then(appendHitsMarkup);
-    newsApiService.totalHits = array.totalHits;
-        let createHitsMarkup=createHitsMarkup(totalHits)
-    if (array.totalHits <= page*40) {
+    // newsApiService.totalHits = array.totalHits;
+    //     let createHitsMarkup=createHitsMarkup(totalHits)
+    // if (array.totalHits <= page*40) {
         
-        return Notiflix.Notify.failure("We're sorry, but you've reached the end of search results.")
-    }
+    //     return Notiflix.Notify.failure("We're sorry, but you've reached the end of search results.")
+    // }
     console.log(newApiService.totalHits)
 }
 
