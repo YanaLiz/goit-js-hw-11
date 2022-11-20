@@ -78,7 +78,9 @@ function onLoadMore() {
     if (newsApiService.totalHits <= 40) {
         loadMoreBtn.disabled();
         Notiflix.Notify.failure("We're sorry, but you've reached the end of search results.")
-}
+    } if (newsApiService.totalHits > 40) {
+        loadMoreBtn.disabled();
+     };
     newsApiService.fetchHits().then(data => {
         appendHitsMarkup(data.hits)
     })
