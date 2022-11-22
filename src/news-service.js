@@ -1,50 +1,51 @@
+import axios from "axios";
 
-const API_KEY = '31272833-6208e6f151d79070e75270c69';
-const BASE_URL='https://pixabay.com/api/'
-export default class NewsApiService{
-constructor() {
-this.searchQuery = '';
-    this.page = 1;
-    this.totalHits = null;
+class newsApiService {
+    constructor() {
+        this.searchQuery = '';
+        this.page = 1;
+        this.totalHits = null;
+    }
+
+    async getHits() {
+    try {
+        return await axios.get('https://pixabay.com/api/', {
+            params: {
+                key: "31272833-6208e6f151d79070e75270c69",
+                q: this.searchQuery,
+                image_type: "photo",
+                orientation: "horizontal",
+                safesearch: true,
+                per_page: 40,
+                page: this.page,
+            }
+        }).then(response => { 
+            return response.data;
+        }).then(data => {
+            return data;
+        })
+    } catch (error) {
+        console.log(error);
+        Notiflix.Notify.failure('Sorry, there are no images matching your search query. Please try again.');
+    }
+    }
+    
+    get query() {
+        return this.searchQuery;
+    }
+
+    set query(newQuery) {
+        this.searchQuery = newQuery;
+    }
+
+    resetPage() {
+        this.page = 1;
+    }
+
+    decreaseTotalHits() {
+        this.totalHits = this.totalHits - 40;
+    }
 }
 
-fetchHits() {
-const options = {
-    key: API_KEY,
-}
 
-const
-url=`${BASE_URL}?key=${API_KEY}&page=${this.page}&q=${this.searchQuery}&orientation=horizontal&safesearch=true&image_type=photo&per_page=40`
-
-return fetch(url, options)
-.then(response => response.json())
-.then(data => {
-    console.log(data);
-this.incrementPage();
-return data;
-})
-.catch(error => {
-Notiflix.Notify.failure('Sorry, there are no images matching your search query. Please try again.');
-});
-}
-
-incrementPage() {
-    this.page += 1;
-}
-
-resetPage() {
-this.page = 1;
-}
-
-decreaseTotalHits() {
-    this.totalHits = this.totalHits - 40
-}
-
-get query(){
-return this.searchQuery;
-}
-
-set query(newQuery){
-this.searchQuery = newQuery;
-}
-}
+export { newsApiService };

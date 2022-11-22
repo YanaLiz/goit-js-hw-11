@@ -1,58 +1,25 @@
 
 import axios from "axios";
-import NewsApiService from "./news-service";
 import Notiflix from "notiflix";
-import LoadMoreBtn from "./load-more-btn";
 import SimpleLightbox from "simplelightbox";
 import "simplelightbox/dist/simple-lightbox.min.css";
+import { newsApiService } from "./news-service";
 
-const refs = {
-searchForm: document.querySelector('#search-form'),
-loadMoreBtn:document.querySelector('.load-more'),
-hitsContainer: document.querySelector('.gallery'),
-}
+let getEl = selector => document.querySelector(selector);
+getEl('.search-form').addEventListener('submit', onSearch);
+getEl('.load-more').addEventListener('click', onLoadMore);
 
-const newsApiService = new NewsApiService();
+const newApiService = new newsApiService();
+const lightbox = new SimpleLightbox('.gallery a', { captionsData: "alt", captionDelay: 250 });
 
-console.log(newsApiService);
-
-refs.searchForm.addEventListener('submit', onSearch);
-refs.loadMoreBtn.addEventListener('click', onLoadMore);
-
-const loadMoreBtn = new LoadMoreBtn({
-    selector: '.load-more',
-    hidden: true,
-})
-console.log(loadMoreBtn)
-
-
-loadMoreBtn.show();
-loadMoreBtn.disabled();
-
-
-function onSearch(e) {
-e.preventDefault();
-clearHitsConainer();
-    newsApiService.query = e.currentTarget.elements.searchQuery.value;
-    if (newsApiService.query === '') {
-        return Notiflix.Notify.failure('Sorry, there are no images matching your search query. Please try again.')
-    }
-    newsApiService.resetPage();
-    newsApiService.fetchHits().then(data => {
-        newsApiService.totalHits = data.totalHits;
-        console.log(newsApiService.totalHits);
-        appendHitsMarkup(data.hits);
-    });
-    loadMoreBtn.enable();
-}
-
-function createHitsMarkup(hits) {
-    return hits.map(({webformatURL, largeImageURL,
-        tags, likes, views, comments, downloads,
-    }) => {
-        return `<div class="gallery__item photo-card">
-    <a href='${largeImageURL}' class="gallery__link"><img class="gallery__image" src="${webformatURL}" alt="${tags}" loading="lazy" /></a>
-    <div class="info">
+function  createHitsMarkup(cards) {
+    return cards.map(({ webformatURL, largeImageURL, tags, likes, views, comments, downloads }) => {
+            return `
+        <div class="gallery_photo-card">
+        <a class="gallery__link" href="${largeImageURL}">
+        <img class="gallery__image" src="${webformatURL}" alt="${tags}" loading="lazy"/>
+        </a>
+        <div class="info">
         <p class="info-item">
             <b>Likes</br></b>${likes}
         </p>
@@ -66,33 +33,72 @@ function createHitsMarkup(hits) {
             <b>Downloads</br></b>${downloads}
         </p>
     </div>
-</div>`
-    }).join('');
+        </div>
+        `
+        }).join('')
 }
 
-var lightbox = new SimpleLightbox('.gallery a', { captionsData: "alt", captionDelay: 250 });
+function appendHitsMarkup(data) {
+    if (data.totalHits > 0) {
+        getEl('.gallery').insertAdjacentHTML('beforeend', createHitsMarkup(data.hits));
+        lightbox.refresh();
+        Notiflix.Notify.success(`Hooray! We load more images.`);
+    } else {
+        Notiflix.Notify.warning("Sorry, there are no images matching your search query. Please try again.");
+    }
+}
 
-function onLoadMore() {
-    newsApiService.decreaseTotalHits() 
-    console.log(newsApiService.totalHits);
-    if (newsApiService.totalHits <= 40) {
-        loadMoreBtn.disabled();
-        Notiflix.Notify.failure("We're sorry, but you've reached the end of search results.")
-    } if (newsApiService.totalHits > 40) {
-        loadMoreBtn.disabled();
-     };
-    newsApiService.fetchHits().then(data => {
-        appendHitsMarkup(data.hits)
+function clearHitsConainer(data) {
+    if (data.totalHits < 40 && data.totalHits !== 0) {
+        getEl('.gallery').insertAdjacentHTML('beforeend', createHitsMarkup(data.hits));
+        lightbox.refresh();
+        return Notiflix.Notify.success(`Hooray! We found ${data.totalHits} images.`);
+    } else if (data.totalHits > 0) {
+        getEl('.gallery').insertAdjacentHTML('beforeend', createHitsMarkup(data.hits));
+        lightbox.refresh();
+        Notiflix.Notify.success(`Hooray! We found ${data.totalHits} images.`);
+        getEl('.load-more').style.visibility = "visible";
+    } else {
+        Notiflix.Notify.warning("Sorry, there are no images matching your search query. Please try again.");
+    }
+}
+
+
+function onSearch(e) {
+    e.preventDefault();
+    newApiService.query = e.currentTarget.elements.searchQuery.value;
+    newApiService.resetPage();
+    if (newApiService.query !== "") {
+        getEl('.gallery').innerHTML = "";
+        getEl('.load-more').style.visibility = "hidden";
+    } else if (newApiService.query === "") {
+        return Notiflix.Notify.warning("Sorry, there are no images matching your search query. Please try again.");
+    
+    }
+    newApiService.getHits().then(data => {
+        newApiService.totalHits = data.totalHits;
+        clearHitsConainer(data);
+    }).catch(error => {
+        console.log(error);
+        
+        Notiflix.Notify.warning("Sorry, there are no images matching your search query. Please try again.");
     })
 }
 
-
-function appendHitsMarkup(hits) {
-    refs.hitsContainer.insertAdjacentHTML('beforeend', createHitsMarkup(hits));
-    lightbox.refresh()
-}
-
-function clearHitsConainer() {
-    refs.hitsContainer.innerHTML = '';
+function onLoadMore(e) {
+    e.preventDefault();
+    newApiService.page += 1;
+    newApiService.decreaseTotalHits();
+    newApiService.getHits().then(data => {
+        if (newApiService.totalHits <= 40) {
+            getEl('.load-more').style.visibility = "hidden";
+            Notiflix.Notify.failure("We're sorry, but you've reached the end of search results.")
+        }
+        appendHitsMarkup(data);
+    }).catch(error => {
+        console.log(error);
+        
+        Notiflix.Notify.warning("Sorry, there are no images matching your search query. Please try again.");
+    })
 }
 

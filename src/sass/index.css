@@ -25,8 +25,8 @@
   justify-content: center;
 }
 
-.is-hidden {
-  display: none;
+element.sttyle {
+  visibility: hidden;
 }
 
 .search-form {
@@ -61,8 +61,8 @@
 }
 
 .load-more {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: block;
+  text-align: center;
   border-radius: 4px;
+  visibility: hidden;
 }/*# sourceMappingURL=index.css.map */
